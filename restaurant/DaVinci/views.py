@@ -41,10 +41,16 @@ def contact(request):
 
 
 def menu(request):
-    context = {}
+    pizza = get_object_or_404(Category, name="Pizza")
+    pasta = get_object_or_404(Category, name="Pasta")
+    PizzaMenu = Menu.objects.filter(category=pizza)
+    PizzaMenu1, PizzaMenu2 = split_list(PizzaMenu)
+    PastaMenu = Menu.objects.filter(category=pasta)
+    PastaMenu1, PastaMenu2 = split_list(PastaMenu)
+    context = {"PizzaMenu1": PizzaMenu1, "PizzaMenu2": PizzaMenu2, "PastaMenu1": PastaMenu1, "PastaMenu2": PastaMenu2, }
     return render(request, "menu.html", context)
 
 
-def services(request):
+def order(request):
     context = {}
     return render(request, "services.html", context)
