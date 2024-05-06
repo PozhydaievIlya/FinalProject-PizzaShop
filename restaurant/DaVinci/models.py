@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 from djmoney.models.fields import MoneyField
 from django.contrib.auth.models import User
@@ -65,3 +66,9 @@ class ContactModel(models.Model):
     class Meta:
         verbose_name = "Користувачі для розсилки"
         verbose_name_plural = "Користувачі для розсилки"
+
+
+
+
+
+

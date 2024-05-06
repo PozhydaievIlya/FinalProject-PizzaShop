@@ -43,11 +43,19 @@ def contact(request):
 def menu(request):
     pizza = get_object_or_404(Category, name="Pizza")
     pasta = get_object_or_404(Category, name="Pasta")
+    salad = get_object_or_404(Category, name="Salad")
+    drink = get_object_or_404(Category, name="Drink")
     PizzaMenu = Menu.objects.filter(category=pizza)
     PizzaMenu1, PizzaMenu2 = split_list(PizzaMenu)
     PastaMenu = Menu.objects.filter(category=pasta)
     PastaMenu1, PastaMenu2 = split_list(PastaMenu)
-    context = {"PizzaMenu1": PizzaMenu1, "PizzaMenu2": PizzaMenu2, "PastaMenu1": PastaMenu1, "PastaMenu2": PastaMenu2, }
+    SaladsMenu = Menu.objects.filter(category=salad)
+    SaladsMenu1, SaladsMenu2 = split_list(SaladsMenu)
+    DrinksMenu = Menu.objects.filter(category=drink)
+    DrinksMenu1, DrinksMenu2 = split_list(DrinksMenu)
+    context = {"PizzaMenu1": PizzaMenu1, "PizzaMenu2": PizzaMenu2, "PastaMenu1": PastaMenu1,
+               "PastaMenu2": PastaMenu2, "SaladsMenu1": SaladsMenu1, "SaladsMenu2": SaladsMenu2,
+               "DrinksMenu1": DrinksMenu1, "DrinksMenu2": DrinksMenu2, }
     return render(request, "menu.html", context)
 
 

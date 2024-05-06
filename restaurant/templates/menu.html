@@ -64,7 +64,9 @@
 				{% endfor %}
 				</div>
 			</div>
-
+			<div class="text-center mb-5">
+				<a href="#" class="btn col-md-4 btn btn-white btn-outline-white ftco-animate">Order Now</a>
+			</div>
 <!--			Pasta menu-->
 			<div class="row justify-content-center mb-5 pb-3 mt-5 pt-5">
           		<div class="col-md-7 heading-section text-center ftco-animate">
@@ -107,7 +109,9 @@
 				{% endfor %}
 				</div>
 			</div>
-
+			<div class="text-center mb-5">
+				<a href="#" class="btn col-md-4 btn btn-white btn-outline-white ftco-animate">Order Now</a>
+			</div>
 			<!--			Salads menu-->
 			<div class="row justify-content-center mb-5 pb-3 mt-5 pt-5">
           		<div class="col-md-7 heading-section text-center ftco-animate">
@@ -118,39 +122,41 @@
 
 			<div class="row">
 				<div class="col-md-6">
-					{% for p in PastaMenu2%}
+					{% for s in SaladsMenu2%}
 					<div class="pricing-entry d-flex ftco-animate">
-						<div class="img" style="background-image: url({{p.image.url}});"></div>
+						<div class="img" style="background-image: url({{s.image.url}});"></div>
 						<div class="desc pl-3">
 							<div class="d-flex text align-items-center">
-								<h3><span>{{p.name}}</span></h3>
-								<span class="price">{{p.price}}</span>
+								<h3><span>{{s.name}}</span></h3>
+								<span class="price">{{s.price}}</span>
 							</div>
 							<div class="d-block">
-								<p>{{p.description}}</p>
+								<p>{{s.description}}</p>
 							</div>
 						</div>
 					</div>
 					{% endfor %}
 				</div>
 				<div class="col-md-6">
-					{% for p in PastaMenu1%}
+					{% for s in SaladsMenu1%}
 					<div class="pricing-entry d-flex ftco-animate">
-						<div class="img" style="background-image: url({{p.image.url}});"></div>
+						<div class="img" style="background-image: url({{s.image.url}});"></div>
 						<div class="desc pl-3">
 							<div class="d-flex text align-items-center">
-								<h3><span>{{p.name}}</span></h3>
-								<span class="price">{{p.price}}</span>
+								<h3><span>{{s.name}}</span></h3>
+								<span class="price">{{s.price}}</span>
 							</div>
 							<div class="d-block">
-								<p>{{p.description}}</p>
+								<p>{{s.description}}</p>
 							</div>
 						</div>
 					</div>
 				{% endfor %}
 				</div>
 			</div>
-
+			<div class="text-center mb-5">
+				<a href="#" class="btn col-md-4 btn btn-white btn-outline-white ftco-animate">Order Now</a>
+			</div>
 	<!--			Drinks menu-->
 			<div class="row justify-content-center mb-5 pb-3 mt-5 pt-5">
           		<div class="col-md-7 heading-section text-center ftco-animate">
@@ -161,39 +167,41 @@
 
 			<div class="row">
 				<div class="col-md-6">
-					{% for p in PastaMenu2%}
+					{% for d in DrinksMenu2%}
 					<div class="pricing-entry d-flex ftco-animate">
-						<div class="img" style="background-image: url({{p.image.url}});"></div>
+						<div class="img" style="background-image: url({{d.image.url}});"></div>
 						<div class="desc pl-3">
 							<div class="d-flex text align-items-center">
-								<h3><span>{{p.name}}</span></h3>
-								<span class="price">{{p.price}}</span>
+								<h3><span>{{d.name}}</span></h3>
+								<span class="price">{{d.price}}</span>
 							</div>
 							<div class="d-block">
-								<p>{{p.description}}</p>
+								<p>{{d.description}}</p>
 							</div>
 						</div>
 					</div>
 					{% endfor %}
 				</div>
 				<div class="col-md-6">
-					{% for p in PastaMenu1%}
+					{% for d in DrinksMenu1%}
 					<div class="pricing-entry d-flex ftco-animate">
-						<div class="img" style="background-image: url({{p.image.url}});"></div>
+						<div class="img" style="background-image: url({{d.image.url}});"></div>
 						<div class="desc pl-3">
 							<div class="d-flex text align-items-center">
-								<h3><span>{{p.name}}</span></h3>
-								<span class="price">{{p.price}}</span>
+								<h3><span>{{d.name}}</span></h3>
+								<span class="price">{{d.price}}</span>
 							</div>
 							<div class="d-block">
-								<p>{{p.description}}</p>
+								<p>{{d.description}}</p>
 							</div>
 						</div>
 					</div>
 				{% endfor %}
 				</div>
 			</div>
-
+			<div class="text-center mb-5">
+				<a href="#" class="btn col-md-4 btn btn-white btn-outline-white ftco-animate">Order Now</a>
+			</div>
 		</div>
     </section>
 
