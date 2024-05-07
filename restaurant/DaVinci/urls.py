@@ -1,3 +1,5 @@
+from django.contrib.auth.views import LoginView
+
 from . import views
 from django.urls import path
 
@@ -9,4 +11,9 @@ urlpatterns = [
     path("menu", views.menu, name="menu"),
     path("order", views.order, name="order"),
     path("blog/post/<int:id>", views.post, name="post"),
+    path("blog/login", LoginView.as_view(), name="blog_login"),
+    path("blog/logout/", views.blog_logout, name="blog_logout"),
+    path("profile/<int:pk>", views.profile, name="profile"),
+    path("blog/registration/", views.registration, name="registration"),
+    path("blog/profile_update", views.profile_update, name="profile_update"),
 ]

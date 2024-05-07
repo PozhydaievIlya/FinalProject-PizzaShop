@@ -1,0 +1,33 @@
+
+
+{% extends "base.html" %}
+{% block content %}
+<section class="ftco-section">
+      <div class="container">
+          <div class="row justify-content-center mb-1 pb-3">
+              <div class="col-md-7 heading-section ftco-animate text-center">
+                  <h2 class="mb-4">Update your information</h2>
+                  <p class="flip"><span class="deg1"></span><span class="deg2"></span><span class="deg3"></span></p>
+              </div>
+          </div>
+          <div class="row justify-content-md-center ">
+                  <form method="post" action="{% url 'blog_login' %}">
+                      <div class="col col-lg-auto mb-3">
+                          {% csrf_token %}
+                          {{ UpdateForm.as_p }}
+                      </div>
+                      <div class="row justify-content-md-center">
+                          <button type="submit" class="btn btn btn-white btn-outline-white ftco-animate">Update</button>
+                      </div>
+                  </form>
+          </div>
+
+          <div class="row justify-content-center ftco-animate">
+              <p class="mt-5">Don't have an account? <a href="#!" class="text-white-50 fw-bold ">Sign Up</a>
+              </p>
+          </div>
+      </div>
+</section>
+
+
+{% endblock %}

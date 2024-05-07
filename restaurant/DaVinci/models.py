@@ -29,7 +29,7 @@ class Tag(models.Model):
 
 class Menu(models.Model):
     name = models.CharField(max_length=30, verbose_name="Position name")
-    image = models.ImageField(upload_to="static/Product_images", default="static/images/400x400.png")
+    image = models.ImageField(upload_to="Product_images", default="static/images/400x400.png")
     short_description = models.CharField(max_length=80, verbose_name="Short description for post")
     description = models.TextField(verbose_name="Description")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Category")

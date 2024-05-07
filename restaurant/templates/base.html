@@ -48,13 +48,20 @@
 		      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item{% if request.resolver_match.url_name == 'index' %} active {% endif %}" ><a href="{% url 'index' %}" class="nav-link">Home</a></li>
-	          <li class="nav-item{% if request.resolver_match.url_name == 'menu' %} active {% endif %}"><a href="{% url 'menu' %}" class="nav-link">Menu</a></li>
-	          <li class="nav-item{% if request.resolver_match.url_name == 'order' %} active {% endif %}"><a href="{% url 'order' %}" class="nav-link">Order</a></li>
-	          <li class="nav-item{% if request.resolver_match.url_name == 'blog' %} active {% endif %}"><a href="{% url 'blog' %}" class="nav-link">Blog</a></li>
-	          <li class="nav-item{% if request.resolver_match.url_name == 'about' %} active {% endif %}"><a href="{% url 'about' %}" class="nav-link">About</a></li>
-	          <li class="nav-item{% if request.resolver_match.url_name == 'contact' %}  active {% endif %}"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
-	        </ul>
+                <li class="nav-item{% if request.resolver_match.url_name == 'index' %} active {% endif %}" ><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+                <li class="nav-item{% if request.resolver_match.url_name == 'menu' %} active {% endif %}"><a href="{% url 'menu' %}" class="nav-link">Menu</a></li>
+                <li class="nav-item{% if request.resolver_match.url_name == 'order' %} active {% endif %}"><a href="{% url 'order' %}" class="nav-link">Order</a></li>
+                <li class="nav-item{% if request.resolver_match.url_name == 'blog' %} active {% endif %}"><a href="{% url 'blog' %}" class="nav-link">Blog</a></li>
+                <li class="nav-item{% if request.resolver_match.url_name == 'about' %} active {% endif %}"><a href="{% url 'about' %}" class="nav-link">About</a></li>
+                <li class="nav-item{% if request.resolver_match.url_name == 'contact' %}  active {% endif %}"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a href="{% url 'profile' request.user.id %}" class="nav-link btn">Profile</a> </li>
+                <li class="nav-item"><a href="{% url 'blog_logout' %}" class="nav-link btn">Log out</a> </li>
+                {% else %}
+                <li class="nav-item"><a href="{% url 'blog_login' %}" class="nav-link btn">Log in</a> </li>
+                {% endif %}
+                </ul>
+
 	      </div>
 		  </div>
 	  </nav>
@@ -81,33 +88,7 @@
               </ul>
             </div>
           </div>
-<!--          <div class="col-lg-4 col-md-6 mb-5 mb-md-5">-->
-<!--            <div class="ftco-footer-widget mb-4">-->
-<!--              <h2 class="ftco-heading-2">Recent Blog</h2>-->
-<!--              <div class="block-21 mb-4 d-flex">-->
-<!--                <a class="blog-img mr-4" style="background-image: url({% static 'images/image_1.jpg' %});"></a>-->
-<!--                <div class="text">-->
-<!--                  <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a></h3>-->
-<!--                  <div class="meta">-->
-<!--                    <div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>-->
-<!--                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>-->
-<!--                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div class="block-21 mb-4 d-flex">-->
-<!--                <a class="blog-img mr-4" style="background-image: url({% static 'images/image_2.jpg' %});"></a>-->
-<!--                <div class="text">-->
-<!--                  <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a></h3>-->
-<!--                  <div class="meta">-->
-<!--                    <div><a href="#"><span class="icon-calendar"></span> Sept 15, 2018</a></div>-->
-<!--                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>-->
-<!--                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
+
           <div class="col-lg-3 col-md-6 mb-5 mb-md-5">
              <div class="ftco-footer-widget md-4 ml-md-4">
               <h2 class="ftco-heading-2">Links</h2>

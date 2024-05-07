@@ -1,9 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator
-
-from .forms import CommentForm
-from .models import Menu, Tag, Category, BlogPost
-
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import CommentForm, UserUpdateForm, RegistrationForm, ProfilePhotoForm
+from .models import Menu, Tag, Category, BlogPost, Profile
+from django.contrib.messages import constants as messages
 
 def split_list(a_list):
     half = len(a_list)//2
@@ -36,6 +36,7 @@ def blog(request):
 def post(request, id=None):
 
     ResentPosts = BlogPost.objects.order_by("-published_date")[:3]
+    category = Category.objects.all()
     post = get_object_or_404(BlogPost, pk=id)
     # A comment form
     form = CommentForm(request.POST or None)
@@ -49,7 +50,7 @@ def post(request, id=None):
         pass
     # List of active comments for this article
     comments = post.comments.all().order_by("-date")
-    context = {"post": post, "comment": comment, "form": form, "comments": comments, "ResentPosts": ResentPosts}
+    context = {"post": post, "comment": comment, "form": form, "comments": comments, "ResentPosts": ResentPosts, "category": category}
     return render(request, "blog-single.html", context)
 
 
@@ -80,3 +81,62 @@ def menu(request):
 def order(request):
     context = {}
     return render(request, "services.html", context)
+
+
+def blog_logout(request):
+    logout(request)
+    return redirect('/')
+
+
+def blog_login(request):
+    context = {}
+    return render(request, 'registration/login.html', context)
+
+
+def profile(request, pk):
+    currentUser = User.objects.get(id=request.user.id)
+    profile_user = Profile.objects.get(user_id=pk)
+    if request.method == "POST":
+        photoForm = ProfilePhotoForm(request.POST or None, request.FILES or None, instance=profile_user)
+        if photoForm.is_valid():
+            photoForm.save()
+            return redirect(f'/profile/{pk}')
+
+    photoForm = ProfilePhotoForm()
+    context = {"photoForm": photoForm, "profile_user": profile_user}
+    return render(request, 'profile.html', context)
+
+
+def registration(request):
+    form = RegistrationForm()
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            # Log in user
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('index')
+    context = {"form": form,}
+    return render(request, 'registration.html', context)
+
+
+def profile_update(request):
+    # Update form
+    if request.user.is_authenticated:
+        current_user = User.objects.get(id=request.user.id)
+        UpdateForm = UserUpdateForm(request.POST or None, instance=current_user)
+        if UpdateForm.is_valid():
+            UpdateForm.save()
+            login(request, current_user)
+            return redirect(f'/profile/{request.user.id}')
+        context = {"UpdateForm": UpdateForm}
+        return render(request, 'profile_update.html', context)
+    else:
+        messages.SUCCESS(request, "You must be logged in")
+        return redirect('index')

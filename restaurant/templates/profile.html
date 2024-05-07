@@ -1,0 +1,73 @@
+{% extends "base.html"%}
+{% block content %}
+{% load widget_tweaks %}
+    <!------ Include the above in your HEAD tag ---------->
+<div class="container mb-5 ftco-animate" style="">
+  <div class="row justify-content-center mb-1 pb-3">
+              <div class="col-md-7 heading-section ftco-animate text-center mt-5 mb-3">
+                  <h2 class="page-header">{{user}}'s profile</h2>
+                  <p class="flip"><span class="deg1"></span><span class="deg2"></span><span class="deg3"></span></p>
+              </div>
+          </div>
+
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <div class="text-center">
+        {% if user.profile.image %}
+          <img src="{{ user.profile.image.url }}" class="avatar col-md-12" alt="avatar" style="margin-top: 5px; width:350px">
+        {% else %}
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png" class="avatar col-md-12" alt="avatar" style="margin-top: 5px; width:350px">
+        {% endif %}
+        <p style="margin-top: 5px"> Upload a different photo...</p>
+
+        <form action="" method="post" enctype="multipart/form-data">
+
+          {% render_field photoForm.as_p  %}
+          {% csrf_token %}
+
+          <button type="submit" class="btn btn btn-white btn-outline-white ftco-animate">Submit</button>
+        </form>
+        </div>
+    </div>
+    <!-- edit form column -->
+    <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+      <h3>Personal info</h3>
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <div class="col-md-8">
+            <input class="form-control" value="{{user}}" type="text">
+            <label class="form-label">Username</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.first_name}}" type="text">
+            <label class="form-label">First name</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.last_name}}" type="text">
+            <label class="form-label">Last name</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-8">
+            <input class="form-control" value="{{user.email}}" type="text">
+            <label class="form-label">Email</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-8">
+            <a href="{% url 'profile_update' %}" class="btn btn-primary">Update profile</a>
+            <span></span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+ {% endblock %}
