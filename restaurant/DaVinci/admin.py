@@ -1,10 +1,12 @@
 from django.contrib import admin
-from .models import Tag, Category, Menu
+from .models import Tag, Category, Menu, BlogPost, Comments, Profile, BlogPostCategory
 
 # Register your models here.
 admin.site.register(Tag)
 admin.site.register(Category)
-
+admin.site.register(BlogPost)
+admin.site.register(Comments)
+admin.site.register(Profile)
 
 class MenuAdmin(admin.ModelAdmin):
     search_fields = ('name',)
@@ -12,5 +14,5 @@ class MenuAdmin(admin.ModelAdmin):
     list_filter = ['category']
 
 
-
 admin.site.register(Menu, MenuAdmin)
+admin.site.register(BlogPostCategory)

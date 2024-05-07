@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
-from .models import Menu, Tag, Category
+
+from .forms import CommentForm
+from .models import Menu, Tag, Category, BlogPost
 
 
 def split_list(a_list):
@@ -26,12 +28,28 @@ def about(request):
 
 
 def blog(request):
-    context = {}
+    posts = BlogPost.objects.order_by("-published_date")
+    context = {"posts": posts}
     return render(request, "blog.html", context)
 
 
-def blog_single(request):
-    context = {}
+def post(request, id=None):
+
+    ResentPosts = BlogPost.objects.order_by("-published_date")[:3]
+    post = get_object_or_404(BlogPost, pk=id)
+    # A comment form
+    form = CommentForm(request.POST or None)
+    comment = None
+    if form.is_valid():
+        # Create a Comment object before saving it to the database
+        comment = form.save(commit=False)
+        comment.post = post
+        # Save the comment to the database
+        comment.save()
+        pass
+    # List of active comments for this article
+    comments = post.comments.all().order_by("-date")
+    context = {"post": post, "comment": comment, "form": form, "comments": comments, "ResentPosts": ResentPosts}
     return render(request, "blog-single.html", context)
 
 

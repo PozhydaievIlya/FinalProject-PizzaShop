@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'DaVinci',
     'djmoney',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
