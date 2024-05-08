@@ -1,9 +1,10 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import CommentForm, UserUpdateForm, RegistrationForm, ProfilePhotoForm
-from .models import Menu, Tag, Category, BlogPost, Profile
+from .forms import CommentForm, UserUpdateForm, RegistrationForm, ProfilePhotoForm, PostForm
+from .models import Menu, Tag, Category, BlogPost, Profile, BlogPostCategory
 from django.contrib.messages import constants as messages
+from django.utils.timezone import now
 
 def split_list(a_list):
     half = len(a_list)//2
@@ -12,13 +13,14 @@ def split_list(a_list):
 
 # Create your views here.
 def index(request):
+    ResentPosts = BlogPost.objects.order_by("-published_date")[:3]
     t = get_object_or_404(Tag, name="Hot")
     c = get_object_or_404(Category, name="Pizza")
     HotPizzaPosts = Menu.objects.filter(tags=t, category=c)[:6]
     MenuPricing = Menu.objects.all()[:8]
     HotPizzaPosts1, HotPizzaPosts2 = split_list(HotPizzaPosts)
     MenuPricing1, MenuPricing2 = split_list(MenuPricing)
-    context = {"HotPizzaPosts1": HotPizzaPosts1, "HotPizzaPosts2": HotPizzaPosts2, "MenuPricing1": MenuPricing1, "MenuPricing2": MenuPricing2}
+    context = {"HotPizzaPosts1": HotPizzaPosts1, "HotPizzaPosts2": HotPizzaPosts2, "MenuPricing1": MenuPricing1, "MenuPricing2": MenuPricing2, "ResentPosts": ResentPosts}
     return render(request, "index.html", context)
 
 
@@ -29,14 +31,16 @@ def about(request):
 
 def blog(request):
     posts = BlogPost.objects.order_by("-published_date")
-    context = {"posts": posts}
+    category = BlogPostCategory.objects.all()
+    context = {"posts": posts, "category": category}
     return render(request, "blog.html", context)
 
 
 def post(request, id=None):
-
+    if request.user.is_authenticated:
+        current_user = User.objects.get(id=request.user.id)
     ResentPosts = BlogPost.objects.order_by("-published_date")[:3]
-    category = Category.objects.all()
+    category = BlogPostCategory.objects.all()
     post = get_object_or_404(BlogPost, pk=id)
     # A comment form
     form = CommentForm(request.POST or None)
@@ -79,8 +83,9 @@ def menu(request):
 
 
 def order(request):
-    context = {}
-    return render(request, "services.html", context)
+    OrderMenu = Menu.objects.all().order_by("category")
+    context = {"OrderMenu": OrderMenu}
+    return render(request, "order.html", context)
 
 
 def blog_logout(request):
@@ -94,7 +99,8 @@ def blog_login(request):
 
 
 def profile(request, pk):
-    currentUser = User.objects.get(id=request.user.id)
+    if request.user.is_authenticated:
+        currentUser = User.objects.get(id=request.user.id)
     profile_user = Profile.objects.get(user_id=pk)
     if request.method == "POST":
         photoForm = ProfilePhotoForm(request.POST or None, request.FILES or None, instance=profile_user)
@@ -123,7 +129,7 @@ def registration(request):
             login(request, user)
             return redirect('index')
     context = {"form": form,}
-    return render(request, 'registration.html', context)
+    return render(request, 'registration/registration.html', context)
 
 
 def profile_update(request):
@@ -140,3 +146,27 @@ def profile_update(request):
     else:
         messages.SUCCESS(request, "You must be logged in")
         return redirect('index')
+
+
+def create(request):
+    current_user = User.objects.get(id=request.user.id)
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.published_date = now()
+            post.user = current_user
+            post.save()
+            return index(request)
+    form = PostForm()
+
+    context = {"form": form}
+    return render(request, 'create.html', context)
+
+
+def category(request, name=None):
+    category = BlogPostCategory.objects.all()
+    c = get_object_or_404(BlogPostCategory, name=name)
+    posts = BlogPost.objects.filter(category=c).order_by("-published_date")
+    context = {"posts": posts, "category": category}
+    return render(request, 'blog.html', context)

@@ -11,7 +11,7 @@
             	<span class="subheading">Delicious</span>
               <h1 class="mb-4">Italian Pizza</h1>
               <p class="mb-4 mb-md-5">Experience the taste of Italy with every bite! Indulge in our mouthwatering selection of authentic Italian pizzas, crafted with the finest ingredients and traditional recipes.</p>
-              <p><a href="#" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
+              <p><a href="{% url 'order' %}" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
             </div>
             <div class="col-md-6 ftco-animate">
             	<img src="{% static 'images/bg_1.png' %}" class="img-fluid" alt="">
@@ -30,7 +30,7 @@
             	<span class="subheading">Crunchy</span>
               <h1 class="mb-4">Peperoni</h1>
               <p class="mb-4 mb-md-5">t's the ultimate classic, reinvented for your delight. Bite into perfection today!</p>
-              <p><a href="#" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
+              <p><a href="{% url 'order' %}" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
             </div>
             <div class="col-md-6 ftco-animate">
             	<img src="{% static 'images/bg_2.png' %}" class="img-fluid" alt="">
@@ -49,7 +49,7 @@
               <h1 class="mb-4">We can cook your desired Pizza Recipe! </h1>
 				<span class="subheading">Customise it now!</span>
               <p class="mb-4 mb-md-5">The canvas is yours – let's create something extraordinary together! <br> Just tell operator what you wish for!</p>
-              <p><a href="#" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="#" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
+              <p><a href="{% url 'order' %}" class="btn btn-primary p-3 px-xl-4 py-xl-3">Order Now</a> <a href="{% url 'menu' %}" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">View Menu</a></p>
             </div>
 
           </div>
@@ -171,7 +171,7 @@
     					<div class="text p-4">
     						<h3>{{p1.name}}</h3>
     						<p>{{p1.short_description}}</p>
-    						<p class="price"><span>{{p1.price}}</span> <a href="#" class="ml-2 btn btn-white btn-outline-white">Order</a></p>
+    						<p class="price"><span>{{p1.price}}</span> <a href="{% url 'order' %}" class="ml-2 btn btn-white btn-outline-white">Order</a></p>
     					</div>
     				</div>
     			</div>
@@ -183,7 +183,7 @@
     					<div class="text p-4">
     						<h3>{{p2.name}}</h3>
     						<p>{{p2.short_description}}</p>
-    						<p class="price"><span>{{p2.price}}</span> <a href="#" class="ml-2 btn btn-white btn-outline-white">Order</a></p>
+    						<p class="price"><span>{{p2.price}}</span> <a href="{% url 'order' %}" class="ml-2 btn btn-white btn-outline-white">Order</a></p>
     					</div>
     				</div>
     			</div>
@@ -313,54 +313,28 @@
             <p>Check out our latest blog posts:</p>
           </div>
         </div>
+
         <div class="row d-flex">
+			{% for r in ResentPosts %}
           <div class="col-md-4 d-flex ftco-animate">
           	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url({% static 'images/image_1.jpg' %});">
+              <a href="{% url 'post' id=r.pk %}" class="block-20" style="background-image: url({{r.image}});">
               </a>
               <div class="text py-4 d-block">
               	<div class="meta">
-                  <div><a href="#">Sept 10, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                  <div><p >{{r.published_date}}</p></div>
+                  <div><p >{{r.user}}</p></div>
+                  <div><p class="meta-chat"><span class="icon-chat"></span></p></div>
                 </div>
-                <h3 class="heading mt-2"><a href="#">The Delicious Pizza</a></h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                <h3 class="heading mt-2"><a href="#">{{r.title}}</a></h3>
+                <p>{{r.short_text}}</p>
               </div>
             </div>
           </div>
-          <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url({% static 'images/image_2.jpg'%});">
-              </a>
-              <div class="text py-4 d-block">
-              	<div class="meta">
-                  <div><a href="#">Sept 10, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-                <h3 class="heading mt-2"><a href="#">The Delicious Pizza</a></h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-              </div>
+			{% endfor %}
+
             </div>
           </div>
-          <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url({% static 'images/image_3.jpg' %});">
-              </a>
-              <div class="text py-4 d-block">
-              	<div class="meta">
-                  <div><a href="#">Sept 10, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-                <h3 class="heading mt-2"><a href="#">The Delicious Pizza</a></h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
 

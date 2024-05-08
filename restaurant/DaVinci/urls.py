@@ -16,4 +16,7 @@ urlpatterns = [
     path("profile/<int:pk>", views.profile, name="profile"),
     path("blog/registration/", views.registration, name="registration"),
     path("blog/profile_update", views.profile_update, name="profile_update"),
+    path("blog/registration", views.registration, name="registration"),
+    path("blog/create", views.create, name="create"),
+    path("category/<str:name>", views.category, name="category"),
 ]

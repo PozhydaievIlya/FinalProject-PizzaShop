@@ -4,18 +4,19 @@
       <div class="container">
           <div class="row justify-content-center mb-1 pb-3">
               <div class="col-md-7 heading-section ftco-animate text-center">
-                  <h2 class="mb-4">Update your information</h2>
+                  <h2 class="mb-4">Register</h2>
                   <p class="flip"><span class="deg1"></span><span class="deg2"></span><span class="deg3"></span></p>
+                  <p class="mt-5">Please enter your information below!</p>
               </div>
           </div>
           <div class="row justify-content-md-center ">
-                  <form method="POST" action="">
+                  <form method="post" action="">
                       <div class="col col-lg-auto mb-3">
                           {% csrf_token %}
-                          {{ UpdateForm.as_p }}
+                            {{ form.as_p }}
                       </div>
                       <div class="row justify-content-md-center">
-                          <button type="submit" class="btn btn btn-white btn-outline-white ftco-animate">Update</button>
+                          <input type="submit" class="btn  btn btn-white btn-outline-white ftco-animate" value="Submit" onclick="{% url 'blog_login' %}">
                       </div>
                   </form>
           </div>
@@ -29,3 +30,4 @@
 
 
 {% endblock %}
+

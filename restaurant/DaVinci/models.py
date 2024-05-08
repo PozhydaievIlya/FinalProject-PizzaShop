@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db import models
+from django.db.models.signals import post_save
 from djmoney.models.fields import MoneyField
 from django.contrib.auth.models import User
 
@@ -91,7 +92,7 @@ class BlogPost(models.Model):
     published_date = models.DateTimeField(auto_created=True, verbose_name="Published date")
     category = models.ForeignKey(BlogPostCategory, on_delete=models.CASCADE, verbose_name="Post category")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Author")
-    image = models.URLField(default="http://placehold.it/900x300")
+    image = models.URLField(default="https://i.pinimg.com/736x/26/6f/60/266f60cae0cf8de803d642bef5ac5fea.jpg")
     short_text = models.CharField(max_length=100)
 
     def __str__(self):
@@ -128,3 +129,12 @@ class Profile(models.Model):
     class Meta:
         verbose_name = "Profile"
         verbose_name_plural = "User profiles"
+
+
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile(user=instance)
+        user_profile.save()
+
+
+post_save.connect(create_profile, sender=User)

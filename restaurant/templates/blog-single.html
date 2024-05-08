@@ -59,7 +59,7 @@
               <div class="comment-form-wrap pt-5">
                 <h3 class="mb-5">Leave a comment</h3>
                 <form action="{% url 'post' id=post.pk %}" method="post">
-                {% render_field form.username placeholder='Name' class+="form-control" style="margin-bottom: 5px; width: 30%"%}
+                {% render_field form.username placeholder='Username' class+="form-control" style="margin-bottom: 5px; width: 30%"%}
                 {% render_field form.body placeholder='Add comment' class+="form-control" style="margin-bottom: 5px" rows="4"%}
                 {% csrf_token %}
                   <button type="submit" class="btn btn-primary" >Submit</button>
@@ -73,7 +73,7 @@
               <div class="categories">
                 <h3>Categories</h3>
                 {% for c in category %}
-                <li><a href="#">{{c.name}}</a></li>
+                <li><a href="{% url 'category' name=c.name %}">{{c.name}}</a></li>
                 {% endfor %}
               </div>
             </div>

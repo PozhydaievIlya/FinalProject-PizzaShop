@@ -18,7 +18,6 @@
         </div>
       </div>
     </section>
-    
 
     <section class="ftco-section">
       <div class="container">
@@ -28,11 +27,22 @@
               <p class="flip"><span class="deg1"></span><span class="deg2"></span><span class="deg3"></span></p>
           </div>
         </div>
+          {% if user.is_authenticated %}
+          <div class="text-center mb-5">
+				<a href="{% url 'create' %}" class="btn col-md-4 btn btn-white btn-outline-white ftco-animate">Create post</a>
+          </div>
+          {% endif %}
+          <div class="text-center mb-5">
+          <h3>Categories</h3>
+                {% for c in category %}
+                <a href="{% url 'category' name=c.name %}">    {{c.name}}    </a>
+                {% endfor %}
+          </div>
         <div class="row d-flex">
             {% for p in posts %}
           <div class="col-md-4 d-flex ftco-animate">
           	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url({{p.image}});">
+              <a href="{% url 'post' id=p.pk %}" class="block-20" style="background-image: url({{p.image}});">
               </a>
               <div class="text py-4 d-block">
               	<div class="meta">
@@ -47,22 +57,11 @@
           </div>
             {% endfor %}
         </div>
-<!--        <div class="row mt-5">-->
-<!--          <div class="col text-center">-->
-<!--            <div class="block-27">-->
-<!--              <ul>-->
-<!--                <li><a href="#">&lt;</a></li>-->
-<!--                <li class="active"><span>1</span></li>-->
-<!--                <li><a href="#">2</a></li>-->
-<!--                <li><a href="#">3</a></li>-->
-<!--                <li><a href="#">4</a></li>-->
-<!--                <li><a href="#">5</a></li>-->
-<!--                <li><a href="#">&gt;</a></li>-->
-<!--              </ul>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+
       </div>
+
+
     </section>
+
 
 {% endblock %}
