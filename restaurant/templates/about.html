@@ -1,6 +1,7 @@
 {% extends "base.html"%}
 {% block content %}
 {% load static %}
+{% load widget_tweaks %}
 
     <section class="home-slider owl-carousel img" style="background-image: url({% static 'images/bg_1.jpg' %});">
 
@@ -190,23 +191,25 @@
 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d755.5835271160407!2d-73.9876332!3d40.7546757!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259ab3c8e956d%3A0x9b14a727c98723eb!2zMTQzNSBCcm9hZHdheSwgTmV3IFlvcmssIE5ZIDEwMDE4LCDQodC_0L7Qu9GD0YfQtdC90ZYg0KjRgtCw0YLQuCDQkNC80LXRgNC40LrQuA!5e0!3m2!1suk!2sua!4v1715021707059!5m2!1suk!2sua" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>				</div>
 	    		<div class="col-md-6 appointment ftco-animate">
 	    			<h3 class="mb-3">Contact Us</h3>
-	    			<form action="#" class="appointment-form">
+	    			<form method="post" class="appointment-form">
 	    				<div class="d-md-flex">
+							{% csrf_token %}
 		    				<div class="form-group">
-		    					<input type="text" class="form-control" placeholder="First Name">
+								{% render_field Cform.user_name class="form-control" placeholder="Your Name"%}
 		    				</div>
 	    				</div>
 	    				<div class="d-me-flex">
 	    					<div class="form-group">
-		    					<input type="text" class="form-control" placeholder="Last Name">
+								{% render_field Cform.user_email class="form-control" placeholder="Your Email"%}
 		    				</div>
 	    				</div>
 	    				<div class="form-group">
-	              <textarea name="" id="" cols="30" rows="3" class="form-control" placeholder="Message"></textarea>
-	            </div>
-	            <div class="form-group">
-	              <input type="submit" value="Send" class="btn btn-primary py-3 px-4">
-	            </div>
+							{% render_field Cform.text class="form-control" placeholder="Message"%}
+						</div>
+						<div class="form-group">
+<!--							<input type="submit" value="Send" class="btn btn-primary py-3 px-4">-->
+							<button type="submit" style="margin-top: 4px" class="btn btn-primary py-3 px-4">Send</button>
+						</div>
 	    			</form>
 	    		</div>
     		</div>

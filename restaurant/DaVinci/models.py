@@ -65,9 +65,10 @@ class Post(models.Model):
 class ContactModel(models.Model):
     user_name = models.CharField(max_length=255)
     user_email = models.EmailField(max_length=255)
+    text = models.CharField(max_length=500)
 
     def __str__(self):
-        return self.user_email
+        return f'{self.user_name} messaging us! | Respond: {self.user_email}'
 
     class Meta:
         verbose_name = "Users get in touch"

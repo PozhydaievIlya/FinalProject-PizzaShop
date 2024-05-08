@@ -1,13 +1,14 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import CommentForm, UserUpdateForm, RegistrationForm, ProfilePhotoForm, PostForm
+from .forms import CommentForm, UserUpdateForm, RegistrationForm, ProfilePhotoForm, PostForm, ContactForm
 from .models import Menu, Tag, Category, BlogPost, Profile, BlogPostCategory
 from django.contrib.messages import constants as messages
 from django.utils.timezone import now
 
+
 def split_list(a_list):
-    half = len(a_list)//2
+    half = len(a_list) // 2
     return a_list[:half], a_list[half:]
 
 
@@ -20,12 +21,30 @@ def index(request):
     MenuPricing = Menu.objects.all()[:8]
     HotPizzaPosts1, HotPizzaPosts2 = split_list(HotPizzaPosts)
     MenuPricing1, MenuPricing2 = split_list(MenuPricing)
-    context = {"HotPizzaPosts1": HotPizzaPosts1, "HotPizzaPosts2": HotPizzaPosts2, "MenuPricing1": MenuPricing1, "MenuPricing2": MenuPricing2, "ResentPosts": ResentPosts}
+    # Get in touch (Contact)
+    if request.method == 'POST':
+        Cform = ContactForm(request.POST)
+        if Cform.is_valid():
+            contactElement = Cform.save(commit=False)
+            contactElement.save()
+    else:
+        Cform = ContactForm()
+    context = {"HotPizzaPosts1": HotPizzaPosts1, "HotPizzaPosts2": HotPizzaPosts2,
+               "MenuPricing1": MenuPricing1, "MenuPricing2": MenuPricing2,
+               "ResentPosts": ResentPosts, "Cform": Cform}
     return render(request, "index.html", context)
 
 
 def about(request):
-    context = {}
+    # Get in touch (Contact)
+    if request.method == 'POST':
+        Cform = ContactForm(request.POST)
+        if Cform.is_valid():
+            contactElement = Cform.save(commit=False)
+            contactElement.save()
+    else:
+        Cform = ContactForm()
+    context = {"Cform": Cform}
     return render(request, "about.html", context)
 
 
@@ -54,12 +73,21 @@ def post(request, id=None):
         pass
     # List of active comments for this article
     comments = post.comments.all().order_by("-date")
-    context = {"post": post, "comment": comment, "form": form, "comments": comments, "ResentPosts": ResentPosts, "category": category}
+    context = {"post": post, "comment": comment, "form": form, "comments": comments, "ResentPosts": ResentPosts,
+               "category": category}
     return render(request, "blog-single.html", context)
 
 
 def contact(request):
-    context = {}
+    # Get in touch (Contact)
+    if request.method == 'POST':
+        Cform = ContactForm(request.POST)
+        if Cform.is_valid():
+            contactElement = Cform.save(commit=False)
+            contactElement.save()
+    else:
+        Cform = ContactForm()
+    context = {"Cform":Cform}
     return render(request, "contact.html", context)
 
 
@@ -128,7 +156,7 @@ def registration(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('index')
-    context = {"form": form,}
+    context = {"form": form, }
     return render(request, 'registration/registration.html', context)
 
 
