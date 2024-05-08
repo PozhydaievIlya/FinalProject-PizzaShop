@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+     <div class="row justify-content-center mb-5 pb-3">
+		<div class="col-lg-4">
+			<div class="box-element" id="form-wrapper">
+				<form method="post" class="appointment-form">
+	    				<div class="d-md-flex">
+							{% csrf_token %}
+		    				<div class="form-group">
+								{% render_field form.name class="form-control" placeholder="Your Name"%}
+		    				</div>
+	    				</div>
+	    				<div class="d-me-flex">
+	    					<div class="form-group">
+								{% render_field form.email class="form-control" placeholder="Your Email"%}
+		    				</div>
+	    				</div>
+					<div id="shipping-info">
+						<hr>
+						<p>Shipping Information:</p>
+						<hr>
+						<div class="form-field">
+							{% render_field form.address class="form-control" placeholder="Address"%}
+						</div>
+						<div class="form-field">
+							{% render_field form.phone class="form-control" placeholder="Phone number"%}
+						</div>
+					</div>
+
+					<hr>
+					<button id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">Send</button>
+				</form>
+			</div>
+</div>
+		<div class="col-lg-6">
+			<div class="box-element">
+				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+				<hr>
+				<h3>Order Summary</h3>
+				<hr>
+				<table class="table">
+				{% for item in items %}
+					<tr>
+						<th><h5>{{item.product.name}}</h5></th>
+						<th><h5>${{item.product.price.amount|floatformat:2}}</h5></th>
+						<th><h5>{{item.quantity}}</h5></th>
+						<th><h5>${{item.get_total|floatformat:2}}</h5></th>
+					</tr>
+				{% endfor %}
+				</table>
+				<h5>Items:   {{order.get_cart_items}}</h5>
+				<h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
+			</div>
+		</div>
+	</div>
+		 </div>
+
+
+{% endblock content %}
+
+
+ 

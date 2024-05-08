@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Comments, Profile, BlogPost, ContactModel
+from .models import Comments, Profile, BlogPost, ContactModel, OrderModel
 
 
 class CommentForm(forms.ModelForm):
@@ -92,4 +92,11 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactModel
         fields = ('user_name', 'user_email', 'text',)
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = OrderModel
+        exclude = ('text', 'date',)
+
 

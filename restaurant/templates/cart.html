@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+	<div class="row justify-content-center mb-5 pb-3">
+		<div class="col-lg-8">
+			<div class="box-element">
+
+				<a  class="btn btn-outline-dark" href="{% url 'order' %}">&#x2190; Continue Shopping</a>
+
+				<br>
+				<br>
+				<table class="table">
+					<tr>
+						<th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
+						<th><h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5></th>
+						<th>
+							<a  style="float:right; margin:5px;" class="btn btn-primary text-white" onclick="deleteAllCookies()">Clear Cart</a>
+						</th>
+						<th>
+							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+						</th>
+					</tr>
+				</table>
+
+			<script>
+				function deleteAllCookies() {
+				const cookies = document.cookie.split(";");
+
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i];
+					const eqPos = cookie.indexOf("=");
+					const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+					document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+				}
+				window.location.reload();
+			}
+			</script>
+
+			</div>
+
+			<table class="table">
+					<tr>
+						<th><h5>Item</h5></th>
+						<th><h5>Price</h5></th>
+						<th><h5>Quantity</h5></th>
+						<th><h5>Total</h5></th>
+					</tr>
+					{% for item in items %}
+					<tr>
+						<th><h5>{{item.product.name}}</h5></th>
+						<th><h5>${{item.product.price.amount|floatformat:2}}</h5></th>
+						<th><h5>{{item.quantity}}</h5></th>
+						<th><h5>${{item.get_total|floatformat:2}}</h5></th>
+					</tr>
+					{% endfor %}
+				</table>
+
+		</div>
+	</div>
+{% endblock content %}

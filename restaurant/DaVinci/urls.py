@@ -19,4 +19,6 @@ urlpatterns = [
     path("blog/registration", views.registration, name="registration"),
     path("blog/create", views.create, name="create"),
     path("category/<str:name>", views.category, name="category"),
+    path("cart", views.cart, name="cart"),
+    path("checkout", views.checkout, name="checkout"),
 ]

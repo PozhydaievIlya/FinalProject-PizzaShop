@@ -1,8 +1,10 @@
+import json
+
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import CommentForm, UserUpdateForm, RegistrationForm, ProfilePhotoForm, PostForm, ContactForm
-from .models import Menu, Tag, Category, BlogPost, Profile, BlogPostCategory
+from .forms import CommentForm, UserUpdateForm, RegistrationForm, ProfilePhotoForm, PostForm, ContactForm, OrderForm
+from .models import Menu, Tag, Category, BlogPost, Profile, BlogPostCategory, Order
 from django.contrib.messages import constants as messages
 from django.utils.timezone import now
 
@@ -87,7 +89,7 @@ def contact(request):
             contactElement.save()
     else:
         Cform = ContactForm()
-    context = {"Cform":Cform}
+    context = {"Cform": Cform}
     return render(request, "contact.html", context)
 
 
@@ -198,3 +200,101 @@ def category(request, name=None):
     posts = BlogPost.objects.filter(category=c).order_by("-published_date")
     context = {"posts": posts, "category": category}
     return render(request, 'blog.html', context)
+
+
+def cart(request, cookieData=None):
+    try:
+        cart = json.loads(request.COOKIES['cart'])
+    except:
+        cart = {}
+    print('Cart:', cart)
+    items = []
+    order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
+    cartItems = order['get_cart_items']
+
+    for i in cart:
+        try:
+            cartItems += cart[i]["quantity"]
+
+            product = Menu.objects.get(id=i)
+            total = (product.price.amount * cart[i]["quantity"])
+
+            order['get_cart_total'] += total
+            order['get_cart_items'] += cart[i]["quantity"]
+
+            item = {
+                'product': {
+                    'id': product.id,
+                    'name': product.name,
+                    'price': product.price,
+                    'imageURL': product.image,
+                },
+                'quantity': cart[i]["quantity"],
+                'get_total': total,
+            }
+            items.append(item)
+        except:
+            pass
+
+    context = {'items': items, 'order': order, 'cartItems': cartItems}
+    return render(request, 'cart.html', context)
+
+
+def checkout(request, cookieData=None):
+    try:
+        cart = json.loads(request.COOKIES['cart'])
+    except:
+        cart = {}
+    print('Cart:', cart)
+    items = []
+    checkoutList = []
+    order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
+    cartItems = order['get_cart_items']
+    for i in cart:
+        try:
+            cartItems += cart[i]["quantity"]
+
+            product = Menu.objects.get(id=i)
+            total = (product.price.amount * cart[i]["quantity"])
+
+            order['get_cart_total'] += total
+            order['get_cart_items'] += cart[i]["quantity"]
+
+            item = {
+                'product': {
+                    'id': product.id,
+                    'name': product.name,
+                    'price': product.price,
+                    'imageURL': product.image,
+                },
+                'quantity': cart[i]["quantity"],
+                'get_total': total,
+            }
+            items.append(item)
+        except:
+            pass
+
+    # Get in touch (Contact)
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            orderElement = form.save(commit=False)
+            for i in cart:
+                try:
+                    cartItems += cart[i]["quantity"]
+
+                    product = Menu.objects.get(id=i)
+                    total = (product.price.amount * cart[i]["quantity"])
+
+                    item = f'{product.id}. {product.name} - {cart[i]["quantity"]} pieces  |  Price: {total}     '
+                    checkoutList.append(item)
+                except:
+                    pass
+            checkoutList.append(f'   Total bill: ${order['get_cart_total']}')
+            orderElement.text = checkoutList
+            orderElement.save()
+    else:
+        form = OrderForm()
+
+    context = {'items': items, 'order': order, 'cartItems': cartItems, "form": form}
+    return render(request, 'checkout.html', context)

@@ -26,23 +26,71 @@
             <h2 class="mb-4">Order Menu</h2>
             <p class="flip"><span class="deg1"></span><span class="deg2"></span><span class="deg3"></span></p>
             <p class="mt-5"></p>
+			  <a href="{% url 'cart' %}">
+	    		To your order
+	    	</a>
           </div>
         </div>
     		<div class="row">
 				{% for p in OrderMenu %}
-    			<div class="col-3 text-center ftco-animate mb-5">
+    			<div class="col-3 text-center mb-5">
 					<div class="menu-wrap">
 						<p class="menu-img img mb-4" style="background-image: url({{p.image.url}});"></p>
 						<div class="text">
 							<h3><p>{{p.name}}</p></h3>
 							<p>{{p.short_description}}</p>
 							<p class="price"><span>{{p.price}}</span></p>
-							<p><a href="#" class="btn btn-white btn-outline-white">Add to cart</a></p>
+							<button data-product="{{p.id}}" data-action="add" class="btn btn-white btn-outline-white add-btn update-cart" >Add to cart</button>
 						</div>
 					</div>
       			</div>
 				{%endfor%}
 			</div>
+		<script type="text/javascript">
+			var user = '{{request.user}}'
+
+		function getToken(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
+
+			var cookieArr = document.cookie.split(";");
+
+			function getCookie(name) {
+				for (var i = 0; i < cookieArr.length; i++) {
+					var cookiePair = cookieArr[i].split("=");
+
+					/* Removing whitespace at the beginning of the cookie name
+					and compare it with the given string */
+					if(name == cookiePair[0].trim()) {
+						return decodeURIComponent(cookiePair[1]);
+					}
+				}
+				// Return null if not found
+				return null;
+			}
+
+			var cart = JSON.parse(getCookie('cart'))
+			if(cart == undefined){
+				cart = {}
+				console.log('Cart was created!')
+				document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+			}
+			console.log('Cart',cart)
+		</script>
+
 		</div>
 	</section>
 
