@@ -13,11 +13,17 @@ Welcome to the Pizza Restaurant Web Application! This project is a web applicati
 
 ## Features
 Menu Management: Add, update, and remove items from the menu.
+
 Order Processing: Handle customer orders from ORDERS database table.
+
 Customer Management: Manage customer information and order history.
+
 Authentication: User registration and login functionality for customers and staff.
+
 Blog: Create posts on blog to entertain clients.
+
 Admin Interface: Django's built-in admin interface for managing the application.
+
 
 ## Installation
 Prerequisites
